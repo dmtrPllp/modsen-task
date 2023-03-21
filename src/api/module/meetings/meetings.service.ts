@@ -1,31 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Pagination } from 'src/utils/pagination/pagination.class';
+
 import { CreateMeetingDto } from './dto/create-meeting.dto';
+import { GetMeetingsDto } from './dto/get-meeting.dto';
 import { UpdateMeetingDto } from './dto/update-meeting.dto';
 import { MeetingsRepository } from './meetings.repository';
 import { MeetingIdResponse } from './response/link/meeting-id.response';
+import {
+  MeetingResponse,
+  MeetingsFilterPaginationResponse,
+} from './response/meeting.response';
 
 @Injectable()
 export class MeetingsService {
   constructor(private readonly meetingsRepository: MeetingsRepository) {}
 
-  create(createMeetingDto: CreateMeetingDto) {
-    return 'This action adds a new meeting';
+  public async create(
+    createMeetingDto: CreateMeetingDto,
+    createdBy: number,
+  ): Promise<MeetingResponse> {
+    return await this.meetingsRepository.create(createMeetingDto, createdBy);
   }
 
-  findAll() {
-    return `This action returns all meetings`;
+  public async getAllMeetings(
+    getMeetingsDto: GetMeetingsDto,
+  ): Promise<MeetingsFilterPaginationResponse> {
+    const pagination = new Pagination(getMeetingsDto.page, getMeetingsDto.size);
+
+    const { meetings, count } =
+      await this.meetingsRepository.findMeetingsWithPagination(
+        getMeetingsDto,
+        pagination,
+      );
+
+    return pagination.getResponse(meetings, count);
+  }
+  public async updateMeeting(
+    id: number,
+    updateMeetingDto: UpdateMeetingDto,
+  ): Promise<MeetingResponse> {
+    const meeting = await this.meetingsRepository.getMeetingById(id);
+
+    if (!meeting) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
+
+    const updatedMeeting = await this.meetingsRepository.update(
+      id,
+      updateMeetingDto,
+    );
+
+    return updatedMeeting;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} meeting`;
+  public async checkCreaterId(id: number, userId: number): Promise<boolean> {
+    return this.meetingsRepository.checkCreaterId(id, userId);
   }
 
-  update(id: number, updateMeetingDto: UpdateMeetingDto) {
-    return `This action updates a #${id} meeting`;
+  public async getById(id: number): Promise<MeetingResponse> {
+    const meeting = await this.meetingsRepository.getMeetingById(id);
+
+    if (!meeting) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
+
+    return meeting;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} meeting`;
+  public async deleteMeeting(id: number): Promise<void> {
+    return await this.meetingsRepository.deleteMeeting(id);
   }
 
   public async getMeetingsByOwnerId(
