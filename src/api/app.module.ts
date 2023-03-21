@@ -9,6 +9,7 @@ import { MeetingsModule } from './module/meetings/meetings.module';
 import { SessionsModule } from './module/sessions/sessions.module';
 import { AuthModule } from './module/auth/auth.module';
 import { UsersModule } from './module/users/users.module';
+import { UserMeetingModule } from './module/user-meeting/user-meeting.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { UsersModule } from './module/users/users.module';
     SessionsModule,
     AuthModule,
     UsersModule,
+    UserMeetingModule,
   ],
   controllers: [],
   providers: [],
