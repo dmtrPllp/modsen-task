@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Pagination } from 'src/utils/pagination/pagination.class';
+import { UserMeetingService } from '../user-meeting/user-meeting.service';
 
 import { CreateMeetingDto } from './dto/create-meeting.dto';
 import { GetMeetingsDto } from './dto/get-meeting.dto';
@@ -13,7 +14,10 @@ import {
 
 @Injectable()
 export class MeetingsService {
-  constructor(private readonly meetingsRepository: MeetingsRepository) {}
+  constructor(
+    private readonly meetingsRepository: MeetingsRepository,
+    private readonly userMeetingService: UserMeetingService,
+  ) {}
 
   public async create(
     createMeetingDto: CreateMeetingDto,
@@ -68,6 +72,8 @@ export class MeetingsService {
   }
 
   public async deleteMeeting(id: number): Promise<void> {
+    await this.userMeetingService.deleteManyByMeetingId(id);
+
     return await this.meetingsRepository.deleteMeeting(id);
   }
 

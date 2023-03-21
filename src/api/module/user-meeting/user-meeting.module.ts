@@ -9,5 +9,6 @@ import { PrismaModule } from 'src/modules/db/prisma.module';
   controllers: [UserMeetingController],
   providers: [UserMeetingService, UserMeetingRepository],
   imports: [PrismaModule],
+  exports: [UserMeetingService],
 })
 export class UserMeetingModule {}

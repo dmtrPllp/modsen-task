@@ -151,9 +151,18 @@ export class MeetingsRepository {
   }
 
   public async deleteMeeting(id: number): Promise<void> {
+    await this.db.userMeeting.deleteMany({
+      where: {
+        meetingId: id,
+      },
+    });
+
     await this.db.meeting.delete({
       where: {
         id,
+      },
+      include: {
+        users: true,
       },
     });
   }

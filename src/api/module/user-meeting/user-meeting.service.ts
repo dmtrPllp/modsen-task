@@ -32,4 +32,8 @@ export class UserMeetingService {
       userId,
     );
   }
+
+  public async deleteManyByMeetingId(meetingId: number): Promise<void> {
+    return await this.userMeetingRepository.deleteManyByMeetingId(meetingId);
+  }
 }

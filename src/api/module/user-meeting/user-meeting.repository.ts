@@ -47,4 +47,12 @@ export class UserMeetingRepository {
       },
     });
   }
+
+  public async deleteManyByMeetingId(meetingId: number): Promise<void> {
+    await this.db.userMeeting.deleteMany({
+      where: {
+        meetingId,
+      },
+    });
+  }
 }
