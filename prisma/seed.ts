@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+
 import { meetings } from './data/meetings';
 
 const prisma = new PrismaClient();
@@ -75,6 +76,16 @@ async function main() {
       {
         method: 'DELETE',
         descriptor: 'UserMeetingController',
+        roleId: 2,
+      },
+      {
+        method: 'POST',
+        descriptor: 'AuthController',
+        roleId: 1,
+      },
+      {
+        method: 'POST',
+        descriptor: 'AuthController',
         roleId: 2,
       },
     ],
