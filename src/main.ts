@@ -2,6 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
+
+import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './api/app.module';
 import { AppEnvInterface } from './configuration/interfaces/app-env.interface';
@@ -11,10 +14,14 @@ async function bootstrap() {
     cors: true,
   });
 
+  app.useGlobalPipes(new ValidationPipe());
+
   app.setGlobalPrefix('api');
 
   const configService: ConfigService = app.get(ConfigService);
   const appConfig = configService.get<AppEnvInterface>('app');
+
+  app.use(cookieParser());
 
   const config = new DocumentBuilder()
     .setTitle('ModsenTestApp')

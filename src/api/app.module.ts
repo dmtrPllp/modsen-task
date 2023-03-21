@@ -4,6 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 
 import appConfig from 'src/configuration/app.config';
+import { PrismaModule } from 'src/modules/db/prisma.module';
+import { MeetingsModule } from './module/meetings/meetings.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import appConfig from 'src/configuration/app.config';
         APP_PORT: Joi.number().required(),
       }),
     }),
+    PrismaModule,
+    MeetingsModule,
   ],
   controllers: [],
   providers: [],
