@@ -16,7 +16,7 @@ import { MeetingResponse } from './response/meeting.response';
 export class MeetingsRepository {
   constructor(private readonly db: PrismaService) {}
 
-  private userSelect = {
+  private meetingSelect = {
     id: true,
     title: true,
     description: true,
@@ -25,8 +25,8 @@ export class MeetingsRepository {
     location: true,
   };
 
-  private fullUserSelect = {
-    ...this.userSelect,
+  private fullMeetingSelect = {
+    ...this.meetingSelect,
     users: {
       select: {
         user: {
@@ -95,7 +95,7 @@ export class MeetingsRepository {
       where: conditions,
       orderBy: orderBy,
       ...pagination.getPagination(),
-      select: this.userSelect,
+      select: this.meetingSelect,
     });
 
     const count =
@@ -134,7 +134,7 @@ export class MeetingsRepository {
       where: {
         id,
       },
-      select: this.fullUserSelect,
+      select: this.fullMeetingSelect,
     });
   }
 

@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 
 import { swaggerType } from 'src/api/helper/swagger/utils';
+
 import { MeetingIdResponse } from '../../meetings/response/link/meeting-id.response';
 import { UserRoleResponse } from './link/user-role.response';
 
@@ -21,6 +22,6 @@ export class UserResponse implements UserOmitMetadata {
   @ApiProperty(swaggerType(UserRoleResponse))
   role?: UserRoleResponse;
 
-  @ApiProperty(swaggerType(UserRoleResponse))
+  @ApiProperty(swaggerType(MeetingIdResponse))
   createdMeetings?: MeetingIdResponse[];
 }

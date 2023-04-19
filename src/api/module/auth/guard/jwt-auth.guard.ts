@@ -9,6 +9,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 import * as url from 'url';
 import * as queryString from 'querystring';
+import { UserResponse } from '../../users/response/user.response';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
@@ -22,7 +23,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
 
   public handleRequest(
     error: Error,
-    user: any,
+    user: UserResponse,
     info: string,
     context: ExecutionContext,
   ): any {
