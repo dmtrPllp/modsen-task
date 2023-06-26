@@ -23,6 +23,11 @@ async function main() {
   await prisma.meeting.createMany({
     data: meetings,
   });
+
+  await prisma.$queryRaw`ALTER SEQUENCE roles_id_seq RESTART WITH 3;`;
+  await prisma.$queryRaw`ALTER SEQUENCE meetings_id_seq RESTART WITH 4;`;
+  await prisma.$queryRaw`ALTER SEQUENCE permissions_id_seq RESTART WITH 15;`;
+  await prisma.$queryRaw`ALTER SEQUENCE users_id_seq RESTART WITH 4;`;
 }
 
 main()
